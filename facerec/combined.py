@@ -50,6 +50,7 @@ def getFaceId(image):
         'returnFaceId': 'true',
         'returnFaceLandmarks': 'false',
         # 'returnFaceAttributes': 'age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur,exposure,noise',
+        'returnFaceAttributes': 'age,gender',
     }
 
     retval, buffer = cv2.imencode('.jpg', image)
@@ -59,9 +60,9 @@ def getFaceId(image):
     response = response.json()
     if len(response) == 0:
         print("No faces recognized from Azure")
-        return None
+        return None, None, None
     fid = response[0]["faceId"]
-    return fid
+    return fid, response[0]["faceAttributes"]["age"], response[0]["faceAttributes"]["gender"]
 
 
 def getOriginalId(fid):
@@ -138,7 +139,7 @@ while True:
         if max_blur_image is not None:
             cv2.imshow('FaceIO', max_blur_image)
             if time.time() - consecutive_time > consecutive_th:
-                fid = getFaceId(max_blur_image)
+                fid, age, gender = getFaceId(max_blur_image)
                 if fid is not None:
                     original_id, confidence = getOriginalId(fid)
                     send_time = time.time()
@@ -151,8 +152,8 @@ while True:
                         string_image = base64.b64encode(string_image)
                         requests.post("http://10.136.8.228:5000/store/enter/" + original_id,
                                       json={"imgUrl": "data:image/jpeg;base64," + string_image.decode("utf-8"),
-                                            "age": 11,
-                                            "gender": 'male'})
+                                            "age": age,
+                                            "gender": gender})
                         all_faces.add(original_id)
                         print('Sending {} face to server'.format('NEW' if confidence == 0 else "OLD"))
                         print()
@@ -165,26 +166,3 @@ while True:
         max_blur = 0
         max_blur_image = None
     cv2.waitKey(1)
-
-    # if len(faces) > 0 and time.time() - last_sent > 4:
-
-
-
-    # Draw a rectangle around the faces
-    # if len(faces) > 0 and time.time() - last_sent > 4:
-    #     # for (x, y, w, h) in faces:
-    #     #     cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
-    #     loop_time = time.time()
-    #     while time.time() - loop_time < 1:
-    #         ret, image = cap.read()
-    #         cv2.imshow("FaceIO", image)
-    #         cv2.waitKey(1)
-    #     if len(findfaces(image)) == 0:
-    #         continue
-    #     fid = sendimage(image)
-    #     if fid is None:
-    #         last_sent = time.time() - 4
-    #         continue
-    #     orig, confidence = getoriginal(fid)
-    #     print(orig, confidence)
-    #     last_sent = time.time()
