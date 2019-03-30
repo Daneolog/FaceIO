@@ -1,0 +1,17 @@
+<div class="ui relaxed divided list">
+  <div class="item" *ngFor="let face of (faces | keyvalue)">
+    <a class="button" routerLink="/detail/{{ face.key }}">
+      <div class="content">
+        <img class="ui avatar image" width="100px" [src]="face.value.pfp" />
+        <p class="header" *ngIf="face.value.isCustomer; else elseBlock">
+          {{ face.value.name }}
+        </p>
+        <ng-template #elseBlock>
+          <p style="color: gray">
+            person unknown
+          </p>
+        </ng-template>
+      </div>
+    </a>
+  </div>
+</div>

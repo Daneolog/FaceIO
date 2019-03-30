@@ -1,0 +1,28 @@
+.ui.avatar.image {
+  width: 5em;
+  height: 5em;
+}
+
+a {
+  :hover {
+    background-color: lightgray;
+  }
+
+  :active {
+    background-color: #aaaaaa;
+  }
+}
+div.content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-items: space;
+
+  * {
+    margin: 10px;
+  }
+}
+
+.header {
+  font-size: 3em;
+}

@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+$black: #000000;
+$pink: #e30070;
+
+$primarycolor: $black;
+$secondarycolor: $pink;
+
+a.button {
+  cursor: default !important;
+}

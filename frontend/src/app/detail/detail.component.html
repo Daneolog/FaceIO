@@ -1,0 +1,74 @@
+<a class="ui button" routerLink="main">Back</a>
+<table *ngIf="customer; else elseBlock" class="ui definition table">
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td>{{ customer.name }}</td>
+    </tr>
+    <tr>
+      <td>Interests</td>
+      <td>
+        <ul>
+          <li *ngFor="let interest of customer.interests">
+            {{ interest }}
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>Phones owned</td>
+      <td>
+        <ul>
+          <li *ngFor="let phone of customer.phonesOwned">
+            <img [src]="phone.image" width="200px" />
+            <p>{{ phone.name }}</p>
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>Phone number</td>
+      <td>{{ customer.phoneNo }}</td>
+    </tr>
+    <tr>
+      <td>Current plan</td>
+      <td>
+        <p *ngFor="let detail of (customer.plan | keyvalue)">
+          {{ detail.key }}: {{ detail.value }}
+        </p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #elseBlock>
+  <!-- <div
+    role="listbox"
+    aria-expanded="false"
+    class="ui fluid selection dropdown"
+    tabindex="0"
+  >
+    <div class="default text" role="alert" aria-live="polite">
+      Select T-Mobile ID
+    </div>
+    <i aria-hidden="true" class="dropdown icon"></i>
+    <div class="menu transition">
+      <div
+        *ngFor="let name of (names | keyvalue)"
+        style="pointer-events:all"
+        role="option"
+        aria-checked="false"
+        aria-selected="false"
+        class="item"
+        (click)="select(name.key)"
+      >
+        <span class="text">Jenny Hess</span>
+      </div>
+    </div>
+  </div> -->
+
+  <a *ngFor="let name of (names | keyvalue)" (click)="select(name.key)">
+    <br />
+    {{ name.value }}
+  </a>
+</ng-template>
