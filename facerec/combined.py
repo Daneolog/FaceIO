@@ -41,7 +41,8 @@ def getoriginal(fid):
         'Ocp-Apim-Subscription-Key': subscription_key
     }
 
-    naka = "dffe3237-6f58-4ac4-9f56-bb721e8e5c6e"
+    naka = "93e75fce-0273-483f-bfd8-4b9d32df9aec"
+    # naka1 = "dffe3237-6f58-4ac4-9f56-bb721e8e5c6e"
     # naka2 = "cbf7e6b9-09a5-4487-9367-0b97df347a1f"
     # naka3 = "31d41da4-c51f-4c8c-8924-37198c01732c"
     mininaka = "c96c87fe-b972-4d2b-9a22-0573f9813aa7"
@@ -55,7 +56,7 @@ def getoriginal(fid):
         # "mode": "matchFace"
     })
     response = response.json()
-    if len(response) == 0 or response[0]["confidence"] < 0.7:
+    if len(response) == 0 or response[0]["confidence"] < 0.0:
         return fid, 0
     return response[0]["faceId"], response[0]["confidence"]
 
@@ -93,9 +94,9 @@ while(True):
             continue
         fid = sendimage(image)
         if fid is None:
-            last_time = time.time() - 4
+            last_sent = time.time() - 4
             continue
         orig, confidence = getoriginal(fid)
         print(orig, confidence)
-        last_time = time.time()
+        last_sent = time.time()
 cap.release()

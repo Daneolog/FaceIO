@@ -1,5 +1,6 @@
 import cv2
 import requests
+import sys
 import json
 import base64
 import numpy as np
@@ -27,8 +28,11 @@ def sendImage(image):
     buffer = np.array(buffer).reshape((len(buffer)))
 
     #response = requests.post(face_api_url, params=params, headers=headers, json={"url": image_url})
-    response = requests.post(face_api_url, params=params, headers=headers, data=bytes(buffer.tolist()))
-    print(json.dumps(response.json()))
+    response = requests.post(face_api_url, params=params, headers=headers, data=bytes(buffer.tolist())).json()
+    if len(response) != 0:
+        print(response[0]['faceId'])
+    
+    #print(json.dumps(response.json()))
 
 currImagesCenters = []
 
