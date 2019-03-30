@@ -1,0 +1,26 @@
+.item {
+  color: white;
+  padding-left: 0.8em !important;
+  padding-right: 0.8em !important;
+}
+
+.ui.avatar.image {
+  width: 4em;
+  height: 4em;
+  border: 3px solid white;
+}
+
+.item:hover {
+  background-color: rgba($color: #000000, $alpha: 0.2);
+}
+
+div.content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-items: space;
+
+  * {
+    margin: 10px;
+  }
+}

@@ -30,7 +30,10 @@
       <td>Phones owned</td>
       <td>
         <div class="phones-container">
-          <span class="phone-display" *ngFor="let phone of customer.phonesOwned">
+          <span
+            class="phone-display"
+            *ngFor="let phone of customer.phonesOwned"
+          >
             <img [src]="phone.img" height="200px" />
             <span>{{ phone.name }}</span>
           </span>
@@ -38,8 +41,11 @@
       </td>
     </tr>
     <tr>
-      <td>Phone number</td>
-      <td>{{ customer.phoneNo }}</td>
+      <td>Contact info</td>
+      <td>
+        <p>Phone: {{ customer.phoneNo }}</p>
+        <p>Email: {{ customer.email }}</p>
+      </td>
     </tr>
     <tr>
       <td>Current plan</td>
@@ -48,7 +54,12 @@
           {{ detail.key }}: {{ detail.value }}
         </p>
         <p>
-          <a class="ui button" routerLink="main" style="float:right;margin-top: 20px;margin-bottom: 10px;">Done</a>
+          <a
+            class="ui button"
+            routerLink="main"
+            style="float:right;margin-top: 20px;margin-bottom: 10px;"
+            >Done</a
+          >
         </p>
       </td>
     </tr>
@@ -82,7 +93,11 @@
   </div> -->
 
   <h1 style="color: white">Assign face to customer:</h1>
-  <p *ngFor="let name of (names | keyvalue)" (click)="select(name.key)" class="name-item">
+  <p
+    *ngFor="let name of (names | keyvalue)"
+    (click)="select(name.key)"
+    class="name-item"
+  >
     {{ name.value }}
   </p>
 </ng-template>

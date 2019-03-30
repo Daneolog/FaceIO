@@ -1,0 +1,10 @@
+<div class="ui relaxed divided list">
+  <div class="item" *ngFor="let promo of (promotions | keyvalue)">
+    <a class="button" routerLink="/promos/{{ promo.key }}">
+      <div class="card">
+        <img [src]="promo.value.icon" style="width: 100%" />
+        <span style="color: black">{{ promo.value.description }}</span>
+      </div>
+    </a>
+  </div>
+</div>

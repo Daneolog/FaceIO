@@ -12,6 +12,10 @@ export interface NamesDict {
   [tid: string]: string;
 }
 
+export interface PromotionsDict {
+  [pid: string]: any;
+}
+
 const HOST = 'http://10.136.8.228:5000';
 
 @Injectable({
@@ -78,6 +82,10 @@ export class DatabaseService {
 
   getCustomer(faceId) {
     return this.http.get(`${HOST}/customers/${faceId}`);
+  }
+
+  getPromotions() {
+    return this.http.get(`${HOST}/promotions`);
   }
 
   assignFace(faceId, tId) {

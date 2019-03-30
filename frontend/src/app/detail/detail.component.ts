@@ -1,10 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import {
-  DatabaseService,
-  ListDict,
-  NamesDict
-} from '../services/database.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { DatabaseService, NamesDict } from '../services/database.service';
 import { Person } from '../models/person.model';
 
 @Component({
@@ -19,7 +15,6 @@ export class DetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private databaseService: DatabaseService
   ) {}
 
