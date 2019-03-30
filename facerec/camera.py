@@ -11,7 +11,7 @@ faceCascade = cv2.CascadeClassifier(cascPath)
 def sendImage(image):
     subscription_key = '87d9518f24ca4658a98b2ad80dc2fb57'
 
-    face_api_url = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0/identify'
+    face_api_url = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect'
     headers = {
         'Content-Type': 'application/octet-stream',
         'Ocp-Apim-Subscription-Key': subscription_key
