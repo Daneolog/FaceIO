@@ -24,49 +24,69 @@ alicia = "d818339e-ecfd-45ed-b11c-889546308693"
 p3 = "b2e2332e-90c7-462d-94e3-5348df491bf7"
 s9 = "https://images-na.ssl-images-amazon.com/images/I/81wLkQ64HXL._SX522_.jpg"
 iPhone = "https://images-na.ssl-images-amazon.com/images/I/51dYN7VDKWL.jpg"
+promo1 = "https://www.t-mobile.com/content/dam/t-mobile/deals/background-images/240226_Q1_Plans-Plus-Affordable.desktop.jpg"
+promo2 = "https://d1ic4altzx8ueg.cloudfront.net/finder-us/wp-uploads/2017/08/get-deal.jpeg"
+promo3 = "https://www.androidguys.com/wp-content/uploads/2017/10/T-Mobile-BYOD-Google-Pixel-2-promo.png"
+pixel2 = "https://img1.ibay.com.mv/is1/full/2018/07/item_2280938_357.jpg"
 
 
-promotion =  {
-    "dollarsOff" : 10,
-    "classes" : [""]
-}
 
 person0 =  {
     "pfp" : pic0,
-    "name" : "Dominic Decoco",
+    "name" : "Davi N. A.",
     "phonesOwned" : [{"img" : s9, "name" : "Samsung S9"}],
-    "interests" : ["OnePlus", "Android"],
+    "interests" : ["OnePlus", "Android", "couple"],
     "phoneNo" : "4701929374",
     "plan" : {"type" : "prepaid", "price": 50, "data" : "unlimited", "msg" : "unlimited", "calls" : "unlimited"},
     "age" : 22,
     "gender": "male",
-    "isCustomer" : True
+    "isCustomer" : True,
+    "email": "davi.nakajima.an@gmail.com"
 }
 
 person1 =  {
     "pfp" : pic1,
     "name" : "Gabriel N. An",
     "phonesOwned" : [{"img" : s9, "name" : "Samsung S9"}, {"img" : iPhone, "name" : "iPhone 6"}],
-    "interests" : ["Samsung", "Android"],
+    "interests" : ["Samsung", "Android", "couple"],
     "phoneNo" : "4701929374",
     "plan" : {"type" : "prepaid", "price": 50, "data" : "unlimited", "msg" : "unlimited", "calls" : "unlimited"},
     "age" : 22,
     "gender": "male",
-    "isCustomer" : True
+    "isCustomer" : True,
+    "email": "gabriel.nakajima.an@gmail.com"
 }
+
 person2 =  {
     "pfp" : default_pfp,
     "name" : "Mati S.",
-    "phonesOwned" : [{"img":s9,"name" : "Samsung S9"}],
-    "interests" : ["Apple", "iPhone"],
+    "phonesOwned" : [{"img":pixel2,"name" : "Pixel 2"}],
+    "interests" : ["Apple", "iPhone", "Pixel"],
     "phoneNo" : "4701929374",
     "plan" : {"type" : "prepaid", "price": 50, "data" : "unlimited", "msg" : "unlimited", "calls" : "unlimited"},
     "age" : 22,
     "gender": "male",
-    "isCustomer" : True
+    "isCustomer" : True,
+    "email": "mszylkowski@hotmail.com"
 }
 
-
+person3 =  {
+    "pfp" : default_pfp,
+    "name" : "Enoch K.",
+    "phonesOwned" : [{"img": iPhone ,"name" : "iPhone 6"}],
+    "interests" : ["Apple", "iPhone"],
+    "phoneNo" : "4701929374",
+    "plan" : {"type" : "prepaid", "price": 50, "data" : "unlimited", "msg" : "unlimited", "calls" : "unlimited"},
+    "age" : 14,
+    "gender": "male",
+    "isCustomer" : True,
+    "email": "daneolog@gmail.com"
+}
+promotion =  {
+    "promo1" : {"icon" : promo1, "description" : "phones included w/ unlimited 2 phones + 2 lines for $100" ,"qualified" : [person1, person0]},
+    "promo2" : {"icon" : promo2, "description" : "Samsung Galaxy S10 for under $700","qualified" : [person0]},
+    "promo3" : {"icon" : promo3, "description" : "Bring your Pixel 2 to T-Mobile and get 50% back", "qualified" : [person2]}
+}
 fid2tid = {
     # mati: "tid0",
     # gabri: "tid1",
@@ -105,6 +125,9 @@ def specificCustomer(fid): # mark visited
         return jsonify({"isCustomer" : False})
     return jsonify(tid2info[fid2tid[fid]])
     
+@app.route("/promotions", methods=['GET'])
+def promotions(): 
+    return jsonify(promotion)
 
 @app.route("/store/faces", methods=['GET'])
 def store_faces():
