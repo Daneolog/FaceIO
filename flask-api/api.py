@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 import flask
 import json
 import socket
+from sendemail import send_email
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 s.connect(("8.8.8.8", 80))
 print(s.getsockname()[0])
@@ -36,9 +37,9 @@ person0 =  {
     "name" : "Davi N. A.",
     "phonesOwned" : [{"img" : s9, "name" : "Samsung S9"}],
     "interests" : ["OnePlus", "Android", "couple"],
-    "phoneNo" : "4701929374",
+    "phoneNo" : "4701466375",
     "plan" : {"type" : "prepaid", "price": 50, "data" : "unlimited", "msg" : "unlimited", "calls" : "unlimited"},
-    "age" : 22,
+    "age" : 19,
     "gender": "male",
     "isCustomer" : True,
     "email": "davi.nakajima.an@gmail.com"
@@ -49,7 +50,7 @@ person1 =  {
     "name" : "Gabriel N. An",
     "phonesOwned" : [{"img" : s9, "name" : "Samsung S9"}, {"img" : iPhone, "name" : "iPhone 6"}],
     "interests" : ["Samsung", "Android", "couple"],
-    "phoneNo" : "4701929374",
+    "phoneNo" : "4701929384",
     "plan" : {"type" : "prepaid", "price": 50, "data" : "unlimited", "msg" : "unlimited", "calls" : "unlimited"},
     "age" : 22,
     "gender": "male",
@@ -62,9 +63,9 @@ person2 =  {
     "name" : "Mati S.",
     "phonesOwned" : [{"img":pixel2,"name" : "Pixel 2"}],
     "interests" : ["Apple", "iPhone", "Pixel"],
-    "phoneNo" : "4701929374",
+    "phoneNo" : "4043126300",
     "plan" : {"type" : "prepaid", "price": 50, "data" : "unlimited", "msg" : "unlimited", "calls" : "unlimited"},
-    "age" : 22,
+    "age" : 21,
     "gender": "male",
     "isCustomer" : True,
     "email": "mszylkowski@hotmail.com"
@@ -75,15 +76,15 @@ person3 =  {
     "name" : "Enoch K.",
     "phonesOwned" : [{"img": iPhone ,"name" : "iPhone 6"}],
     "interests" : ["Apple", "iPhone"],
-    "phoneNo" : "4701929374",
+    "phoneNo" : "4046426209",
     "plan" : {"type" : "prepaid", "price": 50, "data" : "unlimited", "msg" : "unlimited", "calls" : "unlimited"},
-    "age" : 14,
+    "age" : 24,
     "gender": "male",
     "isCustomer" : True,
     "email": "daneolog@gmail.com"
 }
 promotion =  {
-    "promo1" : {"icon" : promo1, "description" : "phones included w/ unlimited 2 phones + 2 lines for $100" ,"qualified" : [person1, person0]},
+    "promo1" : {"icon" : promo1, "description" : "Phones included w/ unlimited 2 phones + 2 lines for $100","qualified" : [person1, person0]},
     "promo2" : {"icon" : promo2, "description" : "Samsung Galaxy S10 for under $700","qualified" : [person0]},
     "promo3" : {"icon" : promo3, "description" : "Bring your Pixel 2 to T-Mobile and get 50% back", "qualified" : [person2]}
 }
@@ -183,6 +184,7 @@ def store_exit(fid):
         if fid in interests:
             data = interests[fid]
             del interests[fid]
+            send_email(tid2info[fid2tid[fid]]["email"], data)
         if fid in fids_visited:
             fids_visited.remove(fid)
         curr_fids.remove(fid)
