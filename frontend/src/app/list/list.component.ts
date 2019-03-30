@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Person } from '../models/person.model';
 import { DatabaseService, ListDict } from '../services/database.service';
 
 @Component({
@@ -9,13 +8,22 @@ import { DatabaseService, ListDict } from '../services/database.service';
 })
 export class ListComponent implements OnInit {
   faces: ListDict;
+  interval: NodeJS.Timer;
 
   constructor(private database: DatabaseService) {
-    database.getFaces().subscribe(data => {
-      this.faces = <ListDict>data;
-      console.log(this.faces);
-    });
+    this.interval = setInterval(
+      () =>
+        database.getFaces().subscribe(data => {
+          this.faces = <ListDict>data;
+          console.log(this.faces);
+        }),
+      1000
+    );
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    clearInterval(this.interval);
+  }
 }

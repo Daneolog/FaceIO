@@ -12,6 +12,16 @@
           <li *ngFor="let interest of customer.interests">
             {{ interest }}
           </li>
+          <li>
+            <div class="ui input">
+              <input
+                #interest
+                type="text"
+                placeholder="new interest"
+                (keyup.enter)="addInterest(interest.value); interest.value = ''"
+              />
+            </div>
+          </li>
         </ul>
       </td>
     </tr>

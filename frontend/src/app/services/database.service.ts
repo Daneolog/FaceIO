@@ -83,4 +83,8 @@ export class DatabaseService {
   assignFace(faceId, tId) {
     return this.http.get(`${HOST}/store/faces/${faceId}/assign/${tId}`);
   }
+
+  appendInterest(tId, interest) {
+    return this.http.post(`${HOST}/customer/${tId}/${interest}`, {});
+  }
 }

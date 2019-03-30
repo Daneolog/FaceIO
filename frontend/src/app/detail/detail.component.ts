@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   DatabaseService,
@@ -25,6 +25,7 @@ export class DetailComponent implements OnInit {
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
+
     this.databaseService.getCustomer(this.id).subscribe(data => {
       if ((<any>data).isCustomer == false) {
         this.customer = null;
@@ -43,6 +44,14 @@ export class DetailComponent implements OnInit {
     this.databaseService.assignFace(this.id, tid).subscribe(data => {
       this.customer = <any>data;
       console.log(this.customer);
+    });
+  }
+
+  addInterest(value: string) {
+    console.log(value);
+    this.customer.interests.push(value);
+    this.databaseService.appendInterest(this.id, value).subscribe(data => {
+      console.log('yay added');
     });
   }
 }
