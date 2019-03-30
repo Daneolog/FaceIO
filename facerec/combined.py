@@ -35,6 +35,7 @@ def sendimage(image):
         'returnFaceId': 'true',
         'returnFaceLandmarks': 'false',
         # 'returnFaceAttributes': 'age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur,exposure,noise',
+        'returnFaceAttributes': 'age,gender',
     }
 
     retval, buffer = cv2.imencode('.jpg', image)
@@ -44,9 +45,9 @@ def sendimage(image):
     response = response.json()
     if len(response) == 0:
         print("No faces recognized from Azure")
-        return None
+        return None, None, None
     fid = response[0]["faceId"]
-    return fid
+    return fid, response[0]["faceAttributes"]["age"], response[0]["faceAttributes"]["gender"]
 
 def getoriginal(fid):
     global all_faces
@@ -115,7 +116,7 @@ while(True):
             cv2.waitKey(1)
         if len(findfaces(image)) == 0:
             continue
-        fid = sendimage(image)
+        fid, age, gender = sendimage(image)
         if fid is None:
             last_sent = time.time() - 4
             continue
@@ -125,6 +126,10 @@ while(True):
             requests.post("http://10.136.8.228:5000/store/exit/" + orig)
         elif confidence == 0:
             faceenc
-            requests.post("http://10.136.8.228:5000/store/enter/" + orig, json={"imageUrl": "data:image/jpeg;base64," + cv2.imencode('.jpg', frame)[1].tostring()})
+            requests.post("http://10.136.8.228:5000/store/enter/" + orig, json={
+                "imageUrl": "data:image/jpeg;base64," + cv2.imencode('.jpg', frame)[1].tostring(),
+                "age": age,
+                "gender": gender
+            })
         last_sent = time.time()
 cap.release()
