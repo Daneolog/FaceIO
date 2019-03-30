@@ -1,5 +1,36 @@
 div.ui.top.attached.menu,
 div.header.item {
   background-color: #000000;
-  color: #e30070;
+  color: white;
+  font-size: 20px;
+  border: none;
+}
+
+div.ui.top.attached.menu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.icon-border {
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 1.14286em;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.icon {
+  max-height: 30px;
+  padding-left: 2px;
+  margin-right: -2px;
+}
+
+div.i {
+  height: 23px;
+  width: 5px;
+  background-color: black;
+  border-radius: 2px;
 }

@@ -7,10 +7,11 @@
           {{ face.value.name }}
         </p>
         <ng-template #elseBlock>
-          <p style="color: gray">
-            person unknown
+          <p style="color: black; opacity: 0.8;" class="header">
+            1st time visitor
           </p>
         </ng-template>
+        <img src="https://www.materialui.co/materialIcons/action/check_circle_white_192x192.png" alt="" class="icon-tick" *ngIf="face.value.wasAttended">
       </div>
     </a>
   </div>

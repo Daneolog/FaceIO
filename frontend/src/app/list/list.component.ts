@@ -1,24 +1,50 @@
-import { Component, OnInit } from '@angular/core';
-import { DatabaseService, ListDict } from '../services/database.service';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { DatabaseService } from '../services/database.service';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class ListComponent implements OnInit {
-  faces: ListDict;
-  interval: NodeJS.Timer;
+export class ListComponent implements OnInit, OnDestroy {
+  faces = [];
+  interval;
 
-  constructor(private database: DatabaseService) {
+  constructor(private database: DatabaseService, private cdRef: ChangeDetectorRef) {
     this.interval = setInterval(
       () =>
-        database.getFaces().subscribe(data => {
-          this.faces = <ListDict>data;
-          console.log(this.faces);
-        }),
+        this.getDbChanges(),
       1000
     );
+    this.getDbChanges();
+  }
+
+  getDbChanges() {
+    this.database.getFaces().subscribe((data: any[]) => {
+      this.faces = data;
+      console.log(data);
+      // console.log('Fetching');
+      // if (this.faces.length === data.length) {
+      //   for (let i = 0; i < this.faces.length; i++) {
+      //     const old = data[i];
+      //     const newface = this.faces[i];
+      //     let change = false;
+      //     ['wasAvailable', 'name', 'pfp', 'isCustomer'].forEach(val => {
+      //       if (old[val] !== newface[val]) {
+      //         console.log(val);
+      //         change = true;
+      //       }
+      //     });
+      //     if (change) {
+      //       this.faces = data;
+      //       console.log(data);
+      //     }
+      //   }
+      // } else {
+      //   this.faces = data;
+      //   console.log(data);
+      // }
+    });
   }
 
   ngOnInit() {}

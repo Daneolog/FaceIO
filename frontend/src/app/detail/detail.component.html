@@ -1,9 +1,10 @@
-<a class="ui button" routerLink="main">Back</a>
 <table *ngIf="customer; else elseBlock" class="ui definition table">
   <tbody>
     <tr>
-      <td>Name</td>
-      <td>{{ customer.name }}</td>
+      <td>Bio</td>
+      <td>Name: {{ customer.name }}</td>
+      <td>Age: {{ customer.age }}</td>
+      <td>Gender: {{ customer.gender }}</td>
     </tr>
     <tr>
       <td>Interests</td>
@@ -28,12 +29,12 @@
     <tr>
       <td>Phones owned</td>
       <td>
-        <ul>
-          <li *ngFor="let phone of customer.phonesOwned">
-            <img [src]="phone.image" width="200px" />
-            <p>{{ phone.name }}</p>
-          </li>
-        </ul>
+        <div class="phones-container">
+          <span class="phone-display" *ngFor="let phone of customer.phonesOwned">
+            <img [src]="phone.img" height="200px" />
+            <span>{{ phone.name }}</span>
+          </span>
+        </div>
       </td>
     </tr>
     <tr>
@@ -45,6 +46,9 @@
       <td>
         <p *ngFor="let detail of (customer.plan | keyvalue)">
           {{ detail.key }}: {{ detail.value }}
+        </p>
+        <p>
+          <a class="ui button" routerLink="main" style="float:right;margin-top: 20px;margin-bottom: 10px;">Done</a>
         </p>
       </td>
     </tr>
@@ -77,8 +81,8 @@
     </div>
   </div> -->
 
-  <a *ngFor="let name of (names | keyvalue)" (click)="select(name.key)">
-    <br />
+  <h1 style="color: white">Assign face to customer:</h1>
+  <p *ngFor="let name of (names | keyvalue)" (click)="select(name.key)" class="name-item">
     {{ name.value }}
-  </a>
+  </p>
 </ng-template>

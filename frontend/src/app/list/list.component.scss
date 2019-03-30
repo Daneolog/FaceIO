@@ -1,17 +1,19 @@
 .ui.avatar.image {
   width: 5em;
   height: 5em;
+  border: 4px solid white;
 }
 
-a {
-  :hover {
-    background-color: lightgray;
-  }
-
-  :active {
-    background-color: #aaaaaa;
-  }
+.item {
+  color: white;
+  padding-left: 0.8em !important;
+  padding-right: 0.8em !important;
 }
+
+.item:hover {
+  background-color: rgba($color: #000000, $alpha: 0.2);
+}
+
 div.content {
   display: flex;
   flex-direction: row;
@@ -25,4 +27,10 @@ div.content {
 
 .header {
   font-size: 3em;
+  color: white !important;
+  flex: 1;
+}
+
+.icon-tick {
+  max-width: 30px;
 }
