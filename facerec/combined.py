@@ -35,8 +35,7 @@ subscription_key = '87d9518f24ca4658a98b2ad80dc2fb57'
 all_faces = {}
 
 if state == "enter":
-    response = requests.get("http://10.136.8.228:5000/store/faces").json()
-    all_faces = set(response.keys())
+    all_faces = set(requests.get("http://10.136.8.228:5000/customers").json())
 
 
 def getFaceId(image):
@@ -103,7 +102,6 @@ def findfaces(image):
     return faces
 
 
-last_sent = time.time()
 max_blur = 0
 max_blur_image = None
 margin = 50
@@ -112,10 +110,10 @@ size_threshold = 15000
 default_size = (50, 50)
 
 consecutive_time = time.time()
-consecutive_th = 1
+consecutive_th = 1.5
 
 send_th = 3
-send_time = time.time() - send_th
+send_time = time.time() - 1
 
 while True:
     # Capture frame-by-frame
