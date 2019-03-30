@@ -4,11 +4,25 @@ import json
 import base64
 import numpy as np
 import time
+import sys
+
+if len(sys.argv) == 1:
+    print("You need to pass in as a parameter \"enter\" or \"exit\" to determine the camera placement")
+state = sys.argv[1]
+if state not in ["enter", "exit"]:
+    print("You need to pass in as a parameter \"enter\" or \"exit\" to determine the camera placement")
+    sys.exit()
 
 cap = cv2.VideoCapture(0)
 cascPath = "haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascPath)
 subscription_key = '87d9518f24ca4658a98b2ad80dc2fb57'
+
+all_faces = []
+
+if state == "enter":
+    response = requests.get("http://10.136.8.228:5000/store/faces").json()
+    all_faces = list(response.keys())
 
 def sendimage(image):
     print("Recognizing image")
@@ -35,6 +49,7 @@ def sendimage(image):
     return fid
 
 def getoriginal(fid):
+    global all_faces
     face_api_url = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0/findsimilars'
     headers = {
         'Content-Type': 'application/json',
@@ -50,12 +65,20 @@ def getoriginal(fid):
     # mati2 = "2eef640d-1991-4926-b077-4f1bf2f4d8d5"
     enoch = "b2e2332e-90c7-462d-94e3-5348df491bf7"
 
+    if state == "exit":
+        all_faces = requests.get("http://10.136.8.228:5000/fids").json()
+
+    print(all_faces)
+
     response = requests.post(face_api_url, headers=headers, json={
         "faceId": fid,
-        "faceIds": [mati, naka, mininaka, enoch],
+        "faceIds": all_faces,
         # "mode": "matchFace"
     })
     response = response.json()
+    if type(response) != list:
+        print(response)
+        return fid, 0
     if len(response) == 0 or response[0]["confidence"] < 0.0:
         return fid, 0
     return response[0]["faceId"], response[0]["confidence"]
@@ -98,5 +121,10 @@ while(True):
             continue
         orig, confidence = getoriginal(fid)
         print(orig, confidence)
+        if state == "exit":
+            requests.post("http://10.136.8.228:5000/store/exit/" + orig)
+        elif confidence == 0:
+            faceenc
+            requests.post("http://10.136.8.228:5000/store/enter/" + orig, json={"imageUrl": "data:image/jpeg;base64," + cv2.imencode('.jpg', frame)[1].tostring()})
         last_sent = time.time()
 cap.release()
