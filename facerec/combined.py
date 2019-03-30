@@ -127,7 +127,7 @@ while(True):
         elif confidence == 0:
             faceenc
             requests.post("http://10.136.8.228:5000/store/enter/" + orig, json={
-                "imageUrl": "data:image/jpeg;base64," + cv2.imencode('.jpg', frame)[1].tostring(),
+                "imgUrl": "data:image/jpeg;base64," + cv2.imencode('.jpg', frame)[1].tostring(),
                 "age": age,
                 "gender": gender
             })
