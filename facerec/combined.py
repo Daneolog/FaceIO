@@ -32,11 +32,11 @@ subscription_key = '87d9518f24ca4658a98b2ad80dc2fb57'
 # fids_list = list(fids2names.keys())
 
 
-all_faces = []
+all_faces = {}
 
 if state == "enter":
     response = requests.get("http://10.136.8.228:5000/store/faces").json()
-    all_faces = list(response.keys())
+    all_faces = set(response.keys())
 
 
 def getFaceId(image):
@@ -73,13 +73,13 @@ def getOriginalId(fid):
     }
 
     if state == "exit":
-        all_faces = requests.get("http://10.136.8.228:5000/fids").json()
+        all_faces = set(requests.get("http://10.136.8.228:5000/fids").json())
 
-    print(all_faces)
+    print('List of current face ids:', all_faces)
 
     response = requests.post(face_api_url, headers=headers, json={
         "faceId": fid,
-        "faceIds": all_faces,
+        "faceIds": list(all_faces),
         # "mode": "matchFace"
     })
     response = response.json()
@@ -105,11 +105,13 @@ def findfaces(image):
 last_sent = time.time()
 max_blur = 0
 max_blur_image = None
-margin = 20
-size_threshold = 150000
+margin = 50
+size_threshold = 15000
+
+default_size = (50, 50)
 
 consecutive_time = time.time()
-consecutive_th = 2
+consecutive_th = 1
 
 send_th = 3
 send_time = time.time() - send_th
@@ -140,14 +142,20 @@ while True:
                 if fid is not None:
                     original_id, confidence = getOriginalId(fid)
                     send_time = time.time()
-                    print('Sending {} face to server')
-                    print()
                     if state == "exit":
                         requests.post("http://10.136.8.228:5000/store/exit/" + original_id)
-                    elif confidence == 0:
+                        print('Sending exit of user with face id: {}'.format(fid))
+                        print()
+                    else:
+                        string_image = cv2.imencode('.jpg', cv2.resize(max_blur_image, default_size))[1]
+                        string_image = base64.b64encode(string_image)
                         requests.post("http://10.136.8.228:5000/store/enter/" + original_id,
-                                      json={"imageUrl": "data:image/jpeg;base64," +
-                                                        cv2.imencode('.jpg', max_blur_image)[1].tostring()})
+                                      json={"imgUrl": "data:image/jpeg;base64," + string_image.decode("utf-8"),
+                                            "age": 11,
+                                            "gender": 'male'})
+                        all_faces.add(original_id)
+                        print('Sending {} face to server'.format('NEW' if confidence == 0 else "OLD"))
+                        print()
                 else:
                     max_blur_image = None
                     max_blur = 0
